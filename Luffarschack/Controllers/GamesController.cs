@@ -70,15 +70,30 @@ namespace Luffarschack.Controllers
                 game.Board[game.HSize * move.Y + move.X] = move.Player;
                 game.CurrentPlayer = game.CurrentPlayer % 2 + 1;
 
+                CheckBoardForWinner(game);
+
                 return Request.CreateResponse(HttpStatusCode.OK, "Sweet");
             }
 
             return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid move");
         }
 
+        private void CheckBoardForWinner(Game game)
+        {
+            var bconv = new BoardConverter();
+            var bchk = new Boardchecker();
+
+            var board = bconv.ConvertToPlayerArray(game.Board, game.VSize);
+            var winner = bchk.DetermineWinner(board);
+            if ((int) winner > 0)
+                game.Winner = (int) winner;
+            else if (bchk.FullBoard(board))
+                game.Winner = 0;
+        }
+
         private bool ValidMove(Move move, Game game)
         {
-            return ModelState.IsValid && game.Board[game.HSize * move.Y + move.X] == 0 && game.CurrentPlayer == move.Player;
+            return ModelState.IsValid && game.Board[game.HSize * move.Y + move.X] == 0 && game.CurrentPlayer == move.Player && game.Winner == -1;
         }
 
         // POST api/games/3/players

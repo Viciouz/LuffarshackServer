@@ -131,7 +131,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BoardConverter.cs" />
     <Compile Include="Models\BoardSize.cs" />
+    <Compile Include="Models\Boardchecker.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Move.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
